@@ -1,0 +1,27 @@
+package ru.yandex.practicum.adapters;
+
+import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.databind.DeserializationContext;
+import com.fasterxml.jackson.databind.JsonDeserializer;
+
+import java.io.IOException;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.ZoneOffset;
+import java.time.format.DateTimeFormatter;
+
+public class StringToInstantDeserializer extends JsonDeserializer<Instant> {
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+
+    @Override
+    public Instant deserialize(JsonParser p, DeserializationContext ctxt) throws IOException {
+        // тут будет строка из json, например "24-05-2024"
+        String dateAsStr = p.getText();
+
+        // преобразуем ее в LocalDate "24-05-2024"
+        LocalDate localDate = LocalDate.parse(dateAsStr, formatter);
+
+        // преобразуем в Instant "2024-05-25T00:00:00Z"
+        return localDate.atStartOfDay().toInstant(ZoneOffset.UTC);
+    }
+}
