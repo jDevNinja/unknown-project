@@ -11,7 +11,7 @@ import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 
 public class StringToInstantDeserializer extends JsonDeserializer<Instant> {
-    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+    private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
 
     @Override
     public Instant deserialize(JsonParser p, DeserializationContext ctxt) throws IOException {
