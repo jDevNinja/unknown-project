@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import ru.yandex.practicum.exceptions.UserAlreadyExistsException;
 import ru.yandex.practicum.model.User;
 
 import java.util.ArrayList;
@@ -24,6 +25,13 @@ public class UserController {
     @PostMapping
     public User createUser(@RequestBody User user) {
         log.info("Получен запрос на сохранение пользователя: {}", user);
+
+        if (loginToUser.containsKey(user.getLogin())) {
+            String errorMessage = String.format("Пользователь с логином %s уже существует!", user.getLogin());
+            log.warn(errorMessage);
+            throw new UserAlreadyExistsException(errorMessage);
+        }
+
         loginToUser.put(user.getLogin(), user);
         return user;
     }
