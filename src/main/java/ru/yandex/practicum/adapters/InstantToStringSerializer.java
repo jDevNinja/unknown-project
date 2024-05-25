@@ -15,10 +15,10 @@ public class InstantToStringSerializer extends JsonSerializer<Instant> {
 
     @Override
     public void serialize(Instant value, JsonGenerator gen, SerializerProvider serializers) throws IOException {
-        // преобразуем инстант в LocalDate 24.05.2024"
+        // преобразуем Instant в LocalDate "2024-08-23"
         LocalDate localDate = value.atZone(ZoneOffset.UTC).toLocalDate();
 
-        // форматируем нужным образом и получаем строку "24-05-2024"
+        // форматируем нужным образом и получаем строку "23-08-2024"
         String instantAsStr = localDate.format(formatter);
 
         // записываем строку в Json

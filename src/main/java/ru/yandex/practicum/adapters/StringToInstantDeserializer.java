@@ -15,13 +15,13 @@ public class StringToInstantDeserializer extends JsonDeserializer<Instant> {
 
     @Override
     public Instant deserialize(JsonParser p, DeserializationContext ctxt) throws IOException {
-        // тут будет строка из json, например "24-05-2024"
+        // тут будет строка из json, например "23.08.2024"
         String dateAsStr = p.getText();
 
-        // преобразуем ее в LocalDate "24-05-2024"
+        // преобразуем ее в LocalDate "23.08.2024"
         LocalDate localDate = LocalDate.parse(dateAsStr, formatter);
 
-        // преобразуем в Instant "2024-05-25T00:00:00Z"
+        // преобразуем в Instant "2024-08-23T00:00:00Z"
         return localDate.atStartOfDay().toInstant(ZoneOffset.UTC);
     }
 }
