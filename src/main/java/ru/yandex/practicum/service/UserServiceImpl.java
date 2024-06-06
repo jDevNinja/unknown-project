@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import ru.yandex.practicum.exceptions.UserAlreadyExistsException;
+import ru.yandex.practicum.exceptions.UserNotFoundException;
 import ru.yandex.practicum.model.User;
 import ru.yandex.practicum.repository.UserRepository;
 
@@ -33,5 +34,16 @@ public class UserServiceImpl implements UserService {
     }
 
     return userRepository.createUser(user);
+  }
+
+  @Override
+  public User getUserByLogin(String login) {
+    Optional<User> userById = userRepository.findUserById(login);
+    return userById.orElseThrow(
+        () -> {
+          String message = String.format("Пользовтаель с логином %s не найден", login);
+          log.warn(message);
+          return new UserNotFoundException(message);
+        });
   }
 }
