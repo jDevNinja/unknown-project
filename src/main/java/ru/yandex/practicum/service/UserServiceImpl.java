@@ -5,6 +5,7 @@ import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
+import ru.yandex.practicum.adapters.MyConfig;
 import ru.yandex.practicum.exceptions.UserAlreadyExistsException;
 import ru.yandex.practicum.exceptions.UserNotFoundException;
 import ru.yandex.practicum.model.User;
@@ -16,6 +17,7 @@ import ru.yandex.practicum.repository.UserRepository;
 public class UserServiceImpl implements UserService {
 
   private final UserRepository userRepository;
+  private final MyConfig myConfig;
 
   @Override
   public List<User> findAllUsers() {
