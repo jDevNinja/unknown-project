@@ -1,3 +1,16 @@
 unknown-project:
   title: "My App"
   max-users-count: 10
+
+spring:
+  sql:
+    init:
+      mode: always
+  h2:
+    console:
+      enabled: true
+  datasource:
+    url: jdbc:h2:file:./db/app
+    driver-class-name: org.h2.Driver
+    username: user
+    password: qwerty
