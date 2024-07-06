@@ -6,8 +6,10 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import ru.yandex.practicum.adapters.MyConfig;
+import ru.yandex.practicum.dto.UserDto;
 import ru.yandex.practicum.exceptions.UserAlreadyExistsException;
 import ru.yandex.practicum.exceptions.UserNotFoundException;
+import ru.yandex.practicum.mappers.UserMapper;
 import ru.yandex.practicum.model.User;
 import ru.yandex.practicum.repository.UserRepository;
 
@@ -20,8 +22,10 @@ public class UserServiceImpl implements UserService {
   private final MyConfig myConfig;
 
   @Override
-  public List<User> findAllUsers() {
-    return userRepository.findAllUsers();
+  public List<UserDto> findAllUsers() {
+    List<User> allUsers = userRepository.findAllUsers();
+
+    return allUsers.stream().map(model -> UserMapper.modelToDto(model)).toList();
   }
 
   @Override

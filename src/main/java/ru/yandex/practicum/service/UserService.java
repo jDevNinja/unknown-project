@@ -1,11 +1,11 @@
 package ru.yandex.practicum.service;
 
+import java.util.List;
+import ru.yandex.practicum.dto.UserDto;
 import ru.yandex.practicum.model.User;
 
-import java.util.List;
-
 public interface UserService {
-  List<User> findAllUsers();
+  List<UserDto> findAllUsers();
 
   User createUser(User user);
 

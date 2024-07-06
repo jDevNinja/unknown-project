@@ -1,12 +1,11 @@
-package ru.yandex.practicum.model;
+package ru.yandex.practicum.dto;
 
 import lombok.Builder;
 import lombok.Data;
 
 @Data
 @Builder
-public class User {
+public class UserDto {
   private Integer id;
   private String login;
-  private String password;
 }

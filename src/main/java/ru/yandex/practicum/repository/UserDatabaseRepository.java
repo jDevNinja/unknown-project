@@ -10,16 +10,18 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.stereotype.Repository;
 import ru.yandex.practicum.model.User;
+import ru.yandex.practicum.repository.mappers.UserMapper;
 
 @Repository
 @RequiredArgsConstructor
 @Primary
 public class UserDatabaseRepository implements UserRepository {
   private final JdbcTemplate jdbcTemplate;
+  private final UserMapper userMapper;
 
   @Override
   public List<User> findAllUsers() {
-    return List.of();
+    return jdbcTemplate.query("SELECT * FROM app_users;", userMapper);
   }
 
   @Override

@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import ru.yandex.practicum.dto.UserDto;
 import ru.yandex.practicum.model.User;
 import ru.yandex.practicum.service.UserService;
 
@@ -27,7 +28,7 @@ public class UserController {
   }
 
   @GetMapping
-  public List<User> findAllUsers() {
+  public List<UserDto> findAllUsers() {
     log.info("Получен запрос на получение всех пользоватеей");
     return userService.findAllUsers();
   }
