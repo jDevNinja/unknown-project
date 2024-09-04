@@ -4,16 +4,15 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
-import ru.yandex.practicum.model.User;
+import ru.yandex.practicum.model.AppUser;
 
 @Component
-public class UserMapper implements RowMapper<User> {
+public class UserMapper implements RowMapper<AppUser> {
   @Override
-  public User mapRow(ResultSet rs, int rowNum) throws SQLException {
+  public AppUser mapRow(ResultSet rs, int rowNum) throws SQLException {
     int id = rs.getInt("id");
     String login = rs.getString("login");
     String password = rs.getString("password");
-
-    return User.builder().id(id).login(login).password(password).build();
+    return AppUser.builder().id(id).login(login).password(password).build();
   }
 }

@@ -2,12 +2,12 @@ package ru.yandex.practicum.mappers;
 
 import lombok.experimental.UtilityClass;
 import ru.yandex.practicum.dto.UserDto;
-import ru.yandex.practicum.model.User;
+import ru.yandex.practicum.model.AppUser;
 
 @UtilityClass
 public class UserMapper {
 
-  public static UserDto modelToDto(User userModel) {
+  public static UserDto modelToDto(AppUser userModel) {
     return UserDto.builder().id(userModel.getId()).login(userModel.getLogin()).build();
   }
 }

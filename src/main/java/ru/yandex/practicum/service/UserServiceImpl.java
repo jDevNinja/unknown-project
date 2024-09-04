@@ -2,35 +2,37 @@ package ru.yandex.practicum.service;
 
 import java.util.List;
 import java.util.Optional;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import ru.yandex.practicum.adapters.MyConfig;
 import ru.yandex.practicum.dto.UserDto;
 import ru.yandex.practicum.exceptions.UserAlreadyExistsException;
 import ru.yandex.practicum.exceptions.UserNotFoundException;
 import ru.yandex.practicum.mappers.UserMapper;
-import ru.yandex.practicum.model.User;
-import ru.yandex.practicum.repository.UserRepository;
+import ru.yandex.practicum.model.AppUser;
+import ru.yandex.practicum.pack.PostEntity;
+import ru.yandex.practicum.repository.mappers.UserRepository;
 
-@RequiredArgsConstructor
 @Slf4j
 @Component
 public class UserServiceImpl implements UserService {
 
-  private final UserRepository userRepository;
-  private final MyConfig myConfig;
+  @Autowired private UserRepository userRepository;
 
   @Override
   public List<UserDto> findAllUsers() {
-    List<User> allUsers = userRepository.findAllUsers();
+    List<AppUser> allUsers = userRepository.findAll();
 
     return allUsers.stream().map(model -> UserMapper.modelToDto(model)).toList();
   }
 
   @Override
-  public User createUser(User user) {
-    Optional<User> userById = userRepository.findUserById(user.getLogin());
+  public AppUser createUser(AppUser user) {
+    Optional<AppUser> userById = userRepository.findById(user.getId());
+
+    List<PostEntity> postEntity = List.of(new PostEntity());
+
+    log.info("Найдены следующие посты: {}", postEntity);
 
     if (userById.isPresent()) {
       String errorMessage =
@@ -39,12 +41,12 @@ public class UserServiceImpl implements UserService {
       throw new UserAlreadyExistsException(errorMessage);
     }
 
-    return userRepository.createUser(user);
+    return userRepository.save(user);
   }
 
   @Override
-  public User getUserByLogin(String login) {
-    Optional<User> userById = userRepository.findUserById(login);
+  public AppUser getUserByLogin(String login) {
+    Optional<AppUser> userById = userRepository.findByLogin(login);
     return userById.orElseThrow(
         () -> {
           String message = String.format("Пользовтаель с логином %s не найден", login);
