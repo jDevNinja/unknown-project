@@ -13,15 +13,14 @@ import lombok.Setter;
 @Entity
 @Getter
 @Setter
-@NoArgsConstructor
 @Builder
 @AllArgsConstructor
-public class AppUser {
+@NoArgsConstructor
+public class UserModel {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Integer id;
-
   private String login;
   private String password;
 }

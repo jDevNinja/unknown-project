@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import ru.yandex.practicum.dto.UserDto;
-import ru.yandex.practicum.model.AppUser;
 import ru.yandex.practicum.service.UserService;
 
 @RestController
@@ -19,12 +18,10 @@ import ru.yandex.practicum.service.UserService;
 @RequiredArgsConstructor
 public class UserController {
 
-  private Integer counter;
-
   private final UserService userService;
 
   @PostMapping
-  public AppUser createUser(@RequestBody AppUser user) {
+  public UserDto createUser(@RequestBody UserDto user) {
     log.info("Получен запрос на сохранение пользователя: {}", user);
     return userService.createUser(user);
   }
@@ -36,8 +33,8 @@ public class UserController {
   }
 
   @GetMapping("/{login}")
-  public AppUser getUserByLogin(@PathVariable String login) {
+  public UserDto getUserByLogin(@PathVariable String login) {
     log.info("Получен запрос на получение пользователя по id: {}", login);
-    return userService.getUserByLogin(login);
+    return userService.findUserByLogin(login);
   }
 }
