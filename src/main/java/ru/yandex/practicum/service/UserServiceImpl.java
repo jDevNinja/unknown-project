@@ -9,7 +9,7 @@ import ru.yandex.practicum.dto.UserDto;
 import ru.yandex.practicum.exceptions.UserNotFoundException;
 import ru.yandex.practicum.mappers.UserMapper;
 import ru.yandex.practicum.model.UserModel;
-import ru.yandex.practicum.repository.mappers.UserRepository;
+import ru.yandex.practicum.repository.UserRepository;
 
 @Slf4j
 @Component

@@ -9,7 +9,7 @@ import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import ru.yandex.practicum.exceptions.UserNotFoundException;
 import ru.yandex.practicum.mappers.UserMapper;
-import ru.yandex.practicum.repository.mappers.UserRepository;
+import ru.yandex.practicum.repository.UserRepository;
 
 import java.util.Optional;
 
