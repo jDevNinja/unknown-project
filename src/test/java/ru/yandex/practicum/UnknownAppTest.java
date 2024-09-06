@@ -23,7 +23,6 @@ import ru.yandex.practicum.dto.UserDto;
 class UnknownAppTest {
 
   private final ApplicationContext applicationContext;
-
   private final TestRestTemplate testRestTemplate;
 
   @Test
@@ -33,8 +32,8 @@ class UnknownAppTest {
 
   @Test
   void createUser_fullIntegrationTest() {
-    String username = "testUser";
-    String password = "testPass";
+    String username = "Mike Mile Mike";
+    String password = "testPassword";
     UserDto userToSave = UserDto.builder().login(username).password(password).build();
 
     HttpHeaders headers = new HttpHeaders();

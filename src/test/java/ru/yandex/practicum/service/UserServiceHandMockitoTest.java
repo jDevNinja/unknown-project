@@ -1,13 +1,12 @@
 package ru.yandex.practicum.service;
 
+import java.util.Optional;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import ru.yandex.practicum.exceptions.UserNotFoundException;
 import ru.yandex.practicum.mappers.UserMapper;
 import ru.yandex.practicum.repository.UserRepository;
-
-import java.util.Optional;
 
 class UserServiceHandMockitoTest {
 

@@ -1,6 +1,7 @@
 package ru.yandex.practicum.controller;
 
 import static org.hamcrest.Matchers.is;
+import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -11,10 +12,10 @@ import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.ApplicationContext;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
@@ -25,7 +26,9 @@ import ru.yandex.practicum.service.UserService;
 @WebMvcTest(UserController.class)
 @RequiredArgsConstructor(onConstructor_ = @Autowired)
 class UserControllerTest {
+
   @MockBean UserService userService;
+  private final ApplicationContext applicationContext;
   private final ObjectMapper mapper;
   private final MockMvc mockMvc;
 
@@ -38,7 +41,7 @@ class UserControllerTest {
     UserDto userToSave = UserDto.builder().login(login).password(password).build();
     UserDto savedUser = UserDto.builder().id(id).login(login).password(password).build();
 
-    Mockito.when(userService.createUser(userToSave)).thenReturn(savedUser);
+    when(userService.createUser(userToSave)).thenReturn(savedUser);
 
     mockMvc
         .perform(
