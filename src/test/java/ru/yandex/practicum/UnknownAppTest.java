@@ -3,6 +3,7 @@ package ru.yandex.practicum;
 import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
 
+import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -18,11 +19,12 @@ import ru.yandex.practicum.dto.UserDto;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
 @ActiveProfiles("test")
+@RequiredArgsConstructor(onConstructor_ = @Autowired)
 class UnknownAppTest {
 
-  @Autowired private ApplicationContext applicationContext;
+  private final ApplicationContext applicationContext;
 
-  @Autowired private TestRestTemplate testRestTemplate;
+  private final TestRestTemplate testRestTemplate;
 
   @Test
   void contextLoads() {
