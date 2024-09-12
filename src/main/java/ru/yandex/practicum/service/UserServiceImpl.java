@@ -43,4 +43,15 @@ public class UserServiceImpl implements UserService {
 
     return userMapper.modelToDto(userById.get());
   }
+
+  @Override
+  public UserDto findUserById(Integer id) {
+    Optional<UserModel> userById = userRepository.findById(id);
+
+    if (userById.isEmpty()) {
+      throw new UserNotFoundException(String.format("Пользователь с id %d не найден", id));
+    }
+
+    return userMapper.modelToDto(userById.get());
+  }
 }

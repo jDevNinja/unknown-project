@@ -1,6 +1,5 @@
 package ru.yandex.practicum.controller;
 
-import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -8,6 +7,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import ru.yandex.practicum.dto.UserDto;
 import ru.yandex.practicum.service.UserService;
@@ -26,15 +26,21 @@ public class UserController {
     return userService.createUser(user);
   }
 
+  //  @GetMapping
+  //  public List<UserDto> findAllUsers() {
+  //    log.info("Получен запрос на получение всех пользоватеей");
+  //    return userService.findAllUsers();
+  //  }
+
   @GetMapping
-  public List<UserDto> findAllUsers() {
-    log.info("Получен запрос на получение всех пользоватеей");
-    return userService.findAllUsers();
+  public UserDto getUserByLogin(@RequestParam("login") String login) {
+    log.info("Получен запрос на получение пользователя по логину: {}", login);
+    return userService.findUserByLogin(login);
   }
 
-  @GetMapping("/{login}")
-  public UserDto getUserByLogin(@PathVariable String login) {
-    log.info("Получен запрос на получение пользователя по id: {}", login);
-    return userService.findUserByLogin(login);
+  @GetMapping("/{id}")
+  public UserDto findUserById(@PathVariable Integer id) {
+    log.info("Получен запрос на получение пользователя по id: {}", id);
+    return userService.findUserById(id);
   }
 }

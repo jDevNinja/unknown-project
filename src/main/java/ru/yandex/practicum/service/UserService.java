@@ -9,4 +9,6 @@ public interface UserService {
   UserDto createUser(UserDto user);
 
   UserDto findUserByLogin(String login);
+
+  UserDto findUserById(Integer id);
 }
