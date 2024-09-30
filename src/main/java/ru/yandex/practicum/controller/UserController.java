@@ -10,7 +10,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import ru.yandex.practicum.dto.UserDto;
+import ru.yandex.practicum.model.Group;
 import ru.yandex.practicum.service.UserService;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/users")
@@ -26,16 +29,12 @@ public class UserController {
     return userService.createUser(user);
   }
 
-  //  @GetMapping
-  //  public List<UserDto> findAllUsers() {
-  //    log.info("Получен запрос на получение всех пользоватеей");
-  //    return userService.findAllUsers();
-  //  }
-
   @GetMapping
-  public UserDto getUserByLogin(@RequestParam("login") String login) {
-    log.info("Получен запрос на получение пользователя по логину: {}", login);
-    return userService.findUserByLogin(login);
+  public List<UserDto> findUsersByFilter(
+      @RequestParam(value = "appGroup", required = false) Group appGroup,
+      @RequestParam(value = "age", required = false) Integer age) {
+    log.info("Получен запрос на получение пользователя по логину: {}", appGroup);
+    return userService.findUsersByFilter(appGroup, age);
   }
 
   @GetMapping("/{id}")

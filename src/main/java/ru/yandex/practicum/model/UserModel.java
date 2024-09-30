@@ -1,6 +1,8 @@
 package ru.yandex.practicum.model;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -26,4 +28,8 @@ public class UserModel {
 
   private String login;
   private String password;
+  private Integer age;
+
+  @Enumerated(value = EnumType.STRING)
+  private Group appGroup;
 }

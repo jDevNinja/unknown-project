@@ -1,15 +1,20 @@
 package ru.yandex.practicum.service;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Component;
 import ru.yandex.practicum.dto.UserDto;
 import ru.yandex.practicum.exceptions.UserNotFoundException;
 import ru.yandex.practicum.mappers.UserMapper;
+import ru.yandex.practicum.model.Group;
 import ru.yandex.practicum.model.UserModel;
 import ru.yandex.practicum.repository.UserRepository;
+import ru.yandex.practicum.repository.UserSpecifications;
 
 @Slf4j
 @Component
@@ -32,16 +37,27 @@ public class UserServiceImpl implements UserService {
   }
 
   @Override
-  public UserDto findUserByLogin(String login) {
-    Optional<UserModel> userById = userRepository.findOneByLogin(login);
+  public List<UserDto> findUsersByFilter(Group group, Integer age) {
+    List<Specification<UserModel>> specifications = new ArrayList<>();
 
-    if (userById.isEmpty()) {
-      String message = String.format("Пользовтаель с логином %s не найден", login);
-      log.warn(message);
-      throw new UserNotFoundException(message);
+    if (Objects.nonNull(group)) {
+      specifications.add(UserSpecifications.hasGroup(group));
     }
 
-    return userMapper.modelToDto(userById.get());
+    if (Objects.nonNull(age)) {
+      specifications.add(UserSpecifications.hasAgeGreater(age));
+    }
+
+    Specification<UserModel> allConditions =
+        specifications.stream()
+            .reduce(
+                (userModelSpecification, userModelSpecification2) ->
+                    userModelSpecification.and(userModelSpecification2))
+            .get();
+
+    List<UserModel> foundUsers = userRepository.findAll(allConditions);
+
+    return foundUsers.stream().map(model -> userMapper.modelToDto(model)).toList();
   }
 
   @Override
