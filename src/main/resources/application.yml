@@ -1,5 +1,8 @@
 spring:
   jpa:
+    properties:
+      hibernate:
+        format_sql: true
     hibernate:
       ddl-auto: none
   sql:
@@ -13,3 +16,9 @@ spring:
     driver-class-name: org.postgresql.Driver
     username: user
     password: pass
+
+logging:
+  level:
+    org.hibernate.SQL: DEBUG
+    org.hibernate.type: TRACE
+    org.hibernate.orm.jdbc.bind: TRACE
