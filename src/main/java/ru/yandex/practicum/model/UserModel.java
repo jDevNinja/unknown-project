@@ -21,7 +21,6 @@ import lombok.ToString;
 @NoArgsConstructor
 @ToString
 public class UserModel {
-
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Integer id;
@@ -31,5 +30,5 @@ public class UserModel {
   private Integer age;
 
   @Enumerated(value = EnumType.STRING)
-  private Group appGroup;
+  private Language language;
 }

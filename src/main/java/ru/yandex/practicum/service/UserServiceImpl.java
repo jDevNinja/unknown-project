@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 import ru.yandex.practicum.dto.UserDto;
 import ru.yandex.practicum.exceptions.UserNotFoundException;
 import ru.yandex.practicum.mappers.UserMapper;
-import ru.yandex.practicum.model.Group;
+import ru.yandex.practicum.model.Language;
 import ru.yandex.practicum.model.UserModel;
 import ru.yandex.practicum.repository.UserRepository;
 import ru.yandex.practicum.repository.UserSpecifications;
@@ -37,15 +37,19 @@ public class UserServiceImpl implements UserService {
   }
 
   @Override
-  public List<UserDto> findUsersByFilter(Group group, Integer age) {
+  public List<UserDto> findUsersByFilter(Language language, Integer age, String login) {
     List<Specification<UserModel>> specifications = new ArrayList<>();
 
-    if (Objects.nonNull(group)) {
-      specifications.add(UserSpecifications.hasGroup(group));
+    if (Objects.nonNull(language)) {
+      specifications.add(UserSpecifications.hasLanguageEqual(language));
     }
 
     if (Objects.nonNull(age)) {
-      specifications.add(UserSpecifications.hasAgeGreater(age));
+      specifications.add(UserSpecifications.hasAgeGreaterOrEqual(age));
+    }
+
+    if (Objects.nonNull(login)) {
+      specifications.add(UserSpecifications.hasLoginLike(login));
     }
 
     Specification<UserModel> allConditions =

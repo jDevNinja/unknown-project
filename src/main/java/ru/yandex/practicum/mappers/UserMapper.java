@@ -7,7 +7,7 @@ import ru.yandex.practicum.model.UserModel;
 @Mapper(componentModel = "spring")
 public interface UserMapper {
 
-  UserDto modelToDto(UserModel appUser);
+  UserDto modelToDto(UserModel userModel);
 
   UserModel dtoToModel(UserDto userDto);
 }
