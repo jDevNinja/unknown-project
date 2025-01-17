@@ -1,13 +1,13 @@
 package ru.yandex.practicum.mappers;
 
-import lombok.experimental.UtilityClass;
+import org.mapstruct.Mapper;
 import ru.yandex.practicum.dto.UserDto;
-import ru.yandex.practicum.model.User;
+import ru.yandex.practicum.model.UserModel;
 
-@UtilityClass
-public class UserMapper {
+@Mapper(componentModel = "spring")
+public interface UserMapper {
 
-  public static UserDto modelToDto(User userModel) {
-    return UserDto.builder().id(userModel.getId()).login(userModel.getLogin()).build();
-  }
+  UserDto modelToDto(UserModel userModel);
+
+  UserModel dtoToModel(UserDto userDto);
 }

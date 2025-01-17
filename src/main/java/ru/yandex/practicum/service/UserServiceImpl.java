@@ -1,55 +1,77 @@
 package ru.yandex.practicum.service;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Component;
-import ru.yandex.practicum.adapters.MyConfig;
 import ru.yandex.practicum.dto.UserDto;
-import ru.yandex.practicum.exceptions.UserAlreadyExistsException;
 import ru.yandex.practicum.exceptions.UserNotFoundException;
 import ru.yandex.practicum.mappers.UserMapper;
-import ru.yandex.practicum.model.User;
+import ru.yandex.practicum.model.Language;
+import ru.yandex.practicum.model.UserModel;
 import ru.yandex.practicum.repository.UserRepository;
+import ru.yandex.practicum.repository.UserSpecifications;
 
-@RequiredArgsConstructor
 @Slf4j
 @Component
+@RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
 
   private final UserRepository userRepository;
-  private final MyConfig myConfig;
+  private final UserMapper userMapper;
 
   @Override
   public List<UserDto> findAllUsers() {
-    List<User> allUsers = userRepository.findAllUsers();
-
-    return allUsers.stream().map(model -> UserMapper.modelToDto(model)).toList();
+    return userRepository.findAll().stream().map(userMapper::modelToDto).toList();
   }
 
   @Override
-  public User createUser(User user) {
-    Optional<User> userById = userRepository.findUserById(user.getLogin());
+  public UserDto createUser(UserDto newUser) {
+    UserModel userToSave = userMapper.dtoToModel(newUser);
+    userToSave = userRepository.save(userToSave);
+    return userMapper.modelToDto(userToSave);
+  }
 
-    if (userById.isPresent()) {
-      String errorMessage =
-          String.format("Пользователь с логином %s уже существует!", user.getLogin());
-      log.warn(errorMessage);
-      throw new UserAlreadyExistsException(errorMessage);
+  @Override
+  public List<UserDto> findUsersByFilter(Language language, Integer age, String login) {
+    List<Specification<UserModel>> specifications = new ArrayList<>();
+
+    if (Objects.nonNull(language)) {
+      specifications.add(UserSpecifications.hasLanguageEqual(language));
     }
 
-    return userRepository.createUser(user);
+    if (Objects.nonNull(age)) {
+      specifications.add(UserSpecifications.hasAgeGreaterOrEqual(age));
+    }
+
+    if (Objects.nonNull(login)) {
+      specifications.add(UserSpecifications.hasLoginLike(login));
+    }
+
+    Specification<UserModel> allConditions =
+        specifications.stream()
+            .reduce(
+                (userModelSpecification, userModelSpecification2) ->
+                    userModelSpecification.and(userModelSpecification2))
+            .get();
+
+    List<UserModel> foundUsers = userRepository.findAll(allConditions);
+
+    return foundUsers.stream().map(model -> userMapper.modelToDto(model)).toList();
   }
 
   @Override
-  public User getUserByLogin(String login) {
-    Optional<User> userById = userRepository.findUserById(login);
-    return userById.orElseThrow(
-        () -> {
-          String message = String.format("Пользовтаель с логином %s не найден", login);
-          log.warn(message);
-          return new UserNotFoundException(message);
-        });
+  public UserDto findUserById(Integer id) {
+    Optional<UserModel> userById = userRepository.findById(id);
+
+    if (userById.isEmpty()) {
+      throw new UserNotFoundException(String.format("Пользователь с id %d не найден", id));
+    }
+
+    return userMapper.modelToDto(userById.get());
   }
 }
